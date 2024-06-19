@@ -35,6 +35,16 @@ const storage = multer.diskStorage({
 });
 const upload = multer({ storage: storage });
 
+// Dummy user data associated with verified numbers
+const userData = {
+  "94ABCO": {
+    name: "John Doe",
+    email: "johndoe@example.com",
+    phone: "123-456-7890",
+  },
+  // Add more user data as needed
+};
+
 app.post("/upload", upload.single("video"), (req, res) => {
   if (!req.file) {
     return res.status(400).send("No video file uploaded.");
@@ -77,7 +87,7 @@ function processFrames(res) {
     .readdirSync("uploads/")
     .filter((file) => file.startsWith("frame-"));
   const promises = [];
-  const verifiedNumbers = ["94ABCO"];
+  const verifiedNumbers = Object.keys(userData);
 
   frames.forEach((frame) => {
     const framePath = `uploads/${frame}`;
@@ -108,30 +118,29 @@ function processFrames(res) {
   // Wait for all API requests to finish
   Promise.all(promises)
     .then((responses) => {
-      const results = responses.map((response, index) => {
-        const plateResult = response.data.results[0]; // Assuming the first result is the most relevant
-        let authenticationStatus = "Not Authenticated";
+      const results = responses
+        .map((response, index) => {
+          const plateResult = response.data.results[0]; // Assuming the first result is the most relevant
+          if (!plateResult) return null; // Skip if no plate result
 
-        if (plateResult) {
           const plate = plateResult.plate;
+          let authenticationStatus = "New Visitor";
+          let userAssociatedData = null;
+
           if (verifiedNumbers.includes(plate)) {
-            authenticationStatus = "Authenticated";
+            authenticationStatus = "Verified";
+            userAssociatedData = userData[plate];
           }
+
           return {
-            frame: frames[index],
+            //frame: frames[index],
             plate: plate,
-            confidence: plateResult.confidence,
+            //confidence: plateResult.confidence,
             authentication: authenticationStatus,
+            user: userAssociatedData,
           };
-        } else {
-          return {
-            frame: frames[index],
-            plate: null,
-            confidence: null,
-            authentication: authenticationStatus,
-          };
-        }
-      });
+        })
+        .filter((result) => result !== null); // Filter out results with no plate
 
       res.json(results);
       // Clean up uploaded files after processing
@@ -144,6 +153,7 @@ function processFrames(res) {
       cleanUpFiles();
     });
 }
+
 function cleanUpFiles() {
   // Delete uploaded files after processing
   const files = fs.readdirSync("uploads/");
