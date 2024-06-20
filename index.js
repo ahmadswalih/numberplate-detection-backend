@@ -10,16 +10,16 @@ const cors = require("cors");
 const app = express();
 const port = 4000 || process.env.PORT;
 
-app.get("/", (req, res) => {
-  res.send("Hello World");
-});
-
 app.use(
   cors({
     origin: "*",
     methods: ["POST", "GET", "PUT", "DELETE", "PATCH"],
   })
 );
+
+app.get("/", (req, res) => {
+  res.send("Hello World");
+});
 
 // Set up storage for uploaded files
 const storage = multer.diskStorage({
