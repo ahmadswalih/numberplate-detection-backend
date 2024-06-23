@@ -6,9 +6,18 @@ const FormData = require("form-data");
 const ffmpeg = require("fluent-ffmpeg");
 const path = require("path");
 const cors = require("cors");
+const AiChat = require("./AiChatAssistant");
+const OpenAI = require("openai");
+const extractTextFromPdf = require("./extractPdfData");
+const aichatRoute = require("./routes/openai");
 
 const app = express();
 const port = 4000 || process.env.PORT;
+
+app.use(express.json());
+
+// Use middleware to parse URL-encoded bodies (if necessary)
+app.use(express.urlencoded({ extended: true }));
 
 app.use(
   cors({
@@ -161,6 +170,8 @@ function cleanUpFiles() {
     fs.unlinkSync(`uploads/${file}`);
   });
 }
+
+app.use("/openai", aichatRoute);
 
 app.listen(port, () => {
   console.log(`Server is running on port ${port}`);
