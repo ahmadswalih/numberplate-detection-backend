@@ -6,9 +6,6 @@ const FormData = require("form-data");
 const ffmpeg = require("fluent-ffmpeg");
 const path = require("path");
 const cors = require("cors");
-const AiChat = require("./AiChatAssistant");
-const OpenAI = require("openai");
-const extractTextFromPdf = require("./extractPdfData");
 const aichatRoute = require("./routes/openai");
 
 const app = express();
