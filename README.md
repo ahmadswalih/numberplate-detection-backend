@@ -91,9 +91,7 @@ The server will run on `http://localhost:4000` by default.
 - Ensure that you have the necessary API keys for OpenALPR and OpenAI services.
 - The application uses file system operations, so make sure the server has appropriate permissions.
 
-## License
-
-[Add your license information here]
 
 
-This README provides an overview of your project, installation instructions, API endpoints, and other relevant information. You may want to add more details or customize it further based on your specific project requirements.
+
+
