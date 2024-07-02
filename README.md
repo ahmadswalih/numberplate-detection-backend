@@ -45,6 +45,7 @@ This Node.js backend application provides functionality for video processing, li
    ```
    PORT=4000
    OPENAI_API_KEY=your_openai_api_key
+   AssistantId=your_openai_assistant_key
    RAPIDAPI_KEY=your_rapidapi_key
    ```
 
