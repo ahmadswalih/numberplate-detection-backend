@@ -1,15 +1,16 @@
 const express = require("express");
 const { OpenAI } = require("openai");
+require("dotenv").config();
 
 const router = express.Router();
 
 // Set up OpenAI Client
 const openai = new OpenAI({
-  apiKey: "sk-proj-jCdRpeZ0EmJExUNl4pZiT3BlbkFJik0SjwTVvppsBTavjCy5",
+  apiKey: process.env.OPENAI_API_KEY,
 });
 
 // Assistant can be created via API or UI
-const assistantId = "asst_uOLOFYdceY2xKspYkLxyNXEt";
+const assistantId = process.env.AssistantId;
 let pollingInterval;
 
 // Set up a Thread

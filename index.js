@@ -110,7 +110,7 @@ function processFrames(res) {
       ...formData.getHeaders(),
       Accept: "application/json",
       "x-rapidapi-ua": "RapidAPI-Playground",
-      "x-rapidapi-key": "7f624d6b87msh92e2c1a4911e73dp1c2a08jsn03988521d285",
+      "x-rapidapi-key": process.env.RAPIDAPI_KEY,
       "x-rapidapi-host": "openalpr.p.rapidapi.com",
     };
 
